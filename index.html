@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0061)file:///C:/Users/edmun/Downloads/magic-city-membership_1.html -->
+<!-- saved from url=(0061)file:///C:/Users/edmun/Downloads/magic-city-membership_3.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -459,42 +459,25 @@
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.85);
+    background: #000;
     z-index: 200;
     flex-direction: column;
   }
   .modal-overlay.open { display: flex; }
 
-  .camera-view {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    gap: 20px;
-  }
-
-  #video-stream {
-    width: 100%;
-    max-width: 600px;
-    border-radius: var(--radius-lg);
-    background: #000;
-    aspect-ratio: 16/9;
-    object-fit: cover;
-  }
-
-  .plate-frame-wrap {
+  .camera-video-area {
     position: relative;
-    width: 100%;
-    max-width: 600px;
+    flex: 1;
+    overflow: hidden;
   }
-  .plate-frame-wrap video {
+
+  #camera-feed {
     width: 100%;
-    border-radius: var(--radius-lg);
-    background: #000;
+    height: 100%;
+    object-fit: cover;
     display: block;
   }
+
   .plate-overlay {
     position: absolute;
     inset: 0;
@@ -504,56 +487,106 @@
     pointer-events: none;
   }
   .plate-target {
-    width: 70%;
-    height: 80px;
-    border: 2.5px solid var(--amber);
+    width: 75%;
+    height: 90px;
+    border: 3px solid var(--amber);
     border-radius: 6px;
-    box-shadow: 0 0 0 2000px rgba(0,0,0,0.45);
+    box-shadow: 0 0 0 2000px rgba(0,0,0,0.5);
+  }
+
+  .camera-top-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 100%);
+    z-index: 2;
+  }
+  .camera-top-bar-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--white);
+  }
+  .camera-close-btn {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: var(--white);
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .camera-bottom-bar {
+    background: rgba(0,0,0,0.85);
+    padding: 16px 24px calc(16px + env(safe-area-inset-bottom, 0px));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  #ocr-status {
+    min-height: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--aqua);
   }
 
   .camera-hint {
-    color: var(--gray-200);
-    font-size: 15px;
+    color: rgba(255,255,255,0.6);
+    font-size: 13px;
     text-align: center;
-    max-width: 300px;
-    line-height: 1.5;
+    line-height: 1.4;
   }
 
-  .camera-actions {
+  .camera-btn-row {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
     width: 100%;
-    max-width: 360px;
-    gap: 10px;
-    padding-bottom: env(safe-area-inset-bottom, 16px);
   }
 
   .capture-btn {
-    width: 72px;
-    height: 72px;
+    width: 76px;
+    height: 76px;
     border-radius: 50%;
-    border: 3px solid var(--white);
+    border: 4px solid var(--white);
     background: none;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    margin: 0 auto;
+    flex-shrink: 0;
     transition: transform 0.1s;
+    -webkit-tap-highlight-color: transparent;
   }
-  .capture-btn:active { transform: scale(0.95); }
+  .capture-btn:active { transform: scale(0.93); }
   .capture-btn-inner {
-    width: 56px;
-    height: 56px;
+    width: 58px;
+    height: 58px;
     border-radius: 50%;
     background: var(--amber);
+    pointer-events: none;
   }
 
-  #ocr-status {
-    min-height: 24px;
-    text-align: center;
-    font-size: 14px;
-    color: var(--aqua);
+  .camera-cancel-btn {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: var(--radius-md);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 10px 22px;
+    cursor: pointer;
   }
 
   /* ── SUCCESS TOAST ── */
@@ -757,91 +790,7 @@
     <button class="filter-chip" data-filter="active" onclick="setFilter(this,&#39;active&#39;)">Active</button>
     <button class="filter-chip" data-filter="inactive" onclick="setFilter(this,&#39;inactive&#39;)">Inactive</button>
   </div>
-  <div id="members-list" class="members-list">
-  <div class="member-card" onclick="openDetail(1)">
-    <div class="member-card-top">
-      <div class="member-avatar">JP</div>
-      <div class="member-info">
-        <div class="member-name">James Patterson</div>
-        <div class="member-phone">(205) 555-0142</div>
-      </div>
-      <span class="status-badge active">● Active</span>
-    </div>
-    
-  <div class="plate-chip">
-    <div>
-      <div class="plate-text">ALB 4421</div>
-    </div>
-    <div class="plate-state"><span>ALABAMA</span><br>Heart of Dixie</div>
-  </div>
-    <div class="member-card-footer">
-      <span>Premium Plan</span>
-      <span>·</span><strong>2021 Black Ford F-150</strong>
-    </div>
-  </div>
-  <div class="member-card" onclick="openDetail(2)">
-    <div class="member-card-top">
-      <div class="member-avatar">MG</div>
-      <div class="member-info">
-        <div class="member-name">Maria Gonzalez</div>
-        <div class="member-phone">(205) 555-0187</div>
-      </div>
-      <span class="status-badge active">● Active</span>
-    </div>
-    
-  <div class="plate-chip">
-    <div>
-      <div class="plate-text">XTR 9923</div>
-    </div>
-    <div class="plate-state"><span>ALABAMA</span><br>Heart of Dixie</div>
-  </div>
-    <div class="member-card-footer">
-      <span>Basic Plan</span>
-      <span>·</span><strong>2019 Silver Honda Accord</strong>
-    </div>
-  </div>
-  <div class="member-card" onclick="openDetail(3)">
-    <div class="member-card-top">
-      <div class="member-avatar">DK</div>
-      <div class="member-info">
-        <div class="member-name">David Kim</div>
-        <div class="member-phone">(205) 555-0231</div>
-      </div>
-      <span class="status-badge active">● Active</span>
-    </div>
-    
-  <div class="plate-chip">
-    <div>
-      <div class="plate-text">DNL 7712</div>
-    </div>
-    <div class="plate-state"><span>ALABAMA</span><br>Heart of Dixie</div>
-  </div>
-    <div class="member-card-footer">
-      <span>Unlimited Plan</span>
-      <span>·</span><strong>2022 White Toyota RAV4</strong>
-    </div>
-  </div>
-  <div class="member-card" onclick="openDetail(4)">
-    <div class="member-card-top">
-      <div class="member-avatar">SM</div>
-      <div class="member-info">
-        <div class="member-name">Sarah Mitchell</div>
-        <div class="member-phone">(205) 555-0399</div>
-      </div>
-      <span class="status-badge inactive">● Inactive</span>
-    </div>
-    
-  <div class="plate-chip">
-    <div>
-      <div class="plate-text">BCK 5544</div>
-    </div>
-    <div class="plate-state"><span>ALABAMA</span><br>Heart of Dixie</div>
-  </div>
-    <div class="member-card-footer">
-      <span>Basic Plan</span>
-      <span>·</span><strong>2018 Blue Chevy Malibu</strong>
-    </div>
-  </div></div>
+  <div id="members-list" class="members-list"></div>
 </div>
 
 <!-- ══════════════ ADD MEMBER PAGE ══════════════ -->
@@ -1059,139 +1008,35 @@
 </div>
 
 <!-- ══════════════ DETAIL VIEW (overlay) ══════════════ -->
-<div id="detail-view" style="display: none; position: fixed; inset: 0px; background: var(--navy); z-index: 150; overflow-y: auto; padding-bottom: 90px;">
+<div id="detail-view" style="display:none; position:fixed; inset:0; background:var(--navy); z-index:150; overflow-y:auto; padding-bottom:90px;">
   <button class="detail-back" onclick="closeDetail()">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m15 18-6-6 6-6"></path></svg>
     Back
   </button>
-  <div id="detail-content">
-    <div class="detail-hero" style="padding:0 20px 24px; margin-bottom:0;">
-      <div class="detail-avatar">JP</div>
-      <div>
-        <div class="detail-name">James Patterson</div>
-        <div class="detail-since">Member since Mar 28, 2026</div>
-        <div style="margin-top:6px;"><span class="status-badge active">● Active</span></div>
-      </div>
-    </div>
-
-    <div style="height:20px"></div>
-
-    
-    <div class="plan-banner">
-      <div>
-        <div class="plan-banner-label">Current Plan</div>
-        <div class="plan-banner-name">Premium</div>
-        <div class="plan-banner-exp">Renews Mar 28, 2027</div>
-      </div>
-      <div style="text-align:right;">
-        <div style="font-family:&#39;Syne&#39;,sans-serif; font-size:28px; font-weight:800; color:var(--amber);">
-          $49
-        </div>
-        <div style="font-size:12px; color:var(--gray-400);">/month</div>
-      </div>
-    </div>
-
-    
-  <div class="plate-chip">
-    <div>
-      <div class="plate-text">ALB 4421</div>
-    </div>
-    <div class="plate-state"><span>ALABAMA</span><br>Heart of Dixie</div>
-  </div>
-
-    <div class="detail-section" style="padding: 0 20px 20px; margin-top: 12px;">
-      <div class="detail-section-title">Contact</div>
-      <div class="detail-row">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-        <div class="detail-row-label">Phone</div>
-        <div class="detail-row-value">(205) 555-0142</div>
-      </div>
-      <div class="detail-row">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-        <div class="detail-row-label">Email</div>
-        <div class="detail-row-value" style="font-size:13px;">jpatterson@email.com</div>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="detail-section" style="padding: 0 20px 20px;">
-      <div class="detail-section-title">Vehicle</div>
-      <div class="detail-row">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
-        <div class="detail-row-label">Vehicle</div>
-        <div class="detail-row-value">2021 Black Ford F-150</div>
-      </div>
-    </div>
-
-    
-
-    <div class="divider"></div>
-
-    <div class="detail-section" style="padding: 0 20px 20px;">
-      <div class="detail-section-title">Check-in History (5 total)</div>
-      <div class="checkin-history" style="padding:0;">
-    <div class="checkin-entry">
-      <div class="checkin-entry-date">Jun 26, 2026</div>
-      <div class="checkin-entry-time">7:38 PM</div>
-    </div>
-  
-    <div class="checkin-entry">
-      <div class="checkin-entry-date">Jun 19, 2026</div>
-      <div class="checkin-entry-time">7:38 PM</div>
-    </div>
-  
-    <div class="checkin-entry">
-      <div class="checkin-entry-date">Jun 12, 2026</div>
-      <div class="checkin-entry-time">7:38 PM</div>
-    </div>
-  
-    <div class="checkin-entry">
-      <div class="checkin-entry-date">Jun 5, 2026</div>
-      <div class="checkin-entry-time">7:38 PM</div>
-    </div>
-  
-    <div class="checkin-entry">
-      <div class="checkin-entry-date">May 29, 2026</div>
-      <div class="checkin-entry-time">7:38 PM</div>
-    </div>
-  </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div style="padding: 0 20px 12px; display:flex; flex-direction:column; gap:10px;">
-      <button class="btn-primary" onclick="toggleStatus(1,&#39;active&#39;)">
-        Deactivate Membership
-      </button>
-    </div>
-
-    <div class="danger-zone">
-      <button class="btn-danger" onclick="deleteMember(1,&#39;James Patterson&#39;)">Delete Member</button>
-    </div>
-  </div>
+  <div id="detail-content"></div>
 </div>
 
 <!-- ══════════════ CAMERA MODAL ══════════════ -->
 <div class="modal-overlay" id="camera-modal">
-  <div class="camera-view">
-    <div style="width:100%; max-width:600px; display:flex; align-items:center; justify-content:space-between;">
-      <div style="font-family:&#39;Syne&#39;,sans-serif; font-size:20px; font-weight:800;">Scan Plate</div>
-      <button onclick="closeCamera()" style="background:none;border:none;color:var(--gray-400);cursor:pointer;font-size:28px;line-height:1;">×</button>
+  <div class="camera-video-area">
+    <video id="camera-feed" autoplay="" playsinline="" muted=""></video>
+    <div class="plate-overlay">
+      <div class="plate-target"></div>
     </div>
-    <div class="plate-frame-wrap">
-      <video id="camera-feed" autoplay="" playsinline="" muted=""></video>
-      <div class="plate-overlay">
-        <div class="plate-target"></div>
-      </div>
+    <div class="camera-top-bar">
+      <div class="camera-top-bar-title">Scan Plate</div>
+      <button class="camera-close-btn" onclick="closeCamera()">×</button>
     </div>
-    <div class="camera-hint">Center the license plate inside the frame, then tap capture</div>
+  </div>
+  <div class="camera-bottom-bar">
+    <div class="camera-hint">Line up the plate inside the box, then tap the button</div>
     <div id="ocr-status"></div>
-    <div class="camera-actions">
-      <button class="capture-btn" onclick="captureFrame()">
+    <div class="camera-btn-row">
+      <button class="camera-cancel-btn" onclick="closeCamera()">Cancel</button>
+      <button class="capture-btn" onclick="captureFrame()" aria-label="Capture">
         <div class="capture-btn-inner"></div>
       </button>
-      <button class="btn-ghost" onclick="closeCamera()">Cancel</button>
+      <div style="width:80px"></div>
     </div>
   </div>
 </div>
