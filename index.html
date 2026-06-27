@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0061)file:///C:/Users/edmun/Downloads/magic-city-membership_8.html -->
+<!-- saved from url=(0061)file:///C:/Users/edmun/Downloads/magic-city-membership_9.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-title" content="Tarrant Car Wash">
 <meta name="theme-color" content="#EEF3FC">
 <title>Tarrant Full Service Car Wash — Members</title>
-<!-- APP VERSION: 1.0.3 — update this and the Dashboard label on each release -->
+<!-- APP VERSION: 1.0.4 — update this and the Dashboard label on each release -->
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&display=swap');
 
@@ -139,26 +139,6 @@
   .search-input:focus { border-color: var(--gold); }
   .search-input::placeholder { color: var(--text-muted); }
 
-  .scan-plate-btn {
-    width: 100%;
-    margin-top: 12px;
-    padding: 14px;
-    background: var(--surface);
-    border: none;
-    border-radius: var(--radius-md);
-    color: var(--gold);
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    transition: background 0.15s;
-  }
-  .scan-plate-btn:active { background: var(--surface-hi); }
-  .scan-plate-btn svg { width: 20px; height: 20px; stroke-width: 1.8; }
 
   /* ── RESULT CARD ── */
   .result-area { padding: 0 20px; }
@@ -449,154 +429,6 @@
     font-size: 20px;
     padding-right: 52px;
   }
-  .plate-cam-btn {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: var(--gold);
-    cursor: pointer;
-    padding: 6px;
-  }
-  .plate-cam-btn svg { width: 22px; height: 22px; stroke-width: 1.8; }
-
-  /* ── CAMERA MODAL ── */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: #000;
-    z-index: 200;
-    flex-direction: column;
-  }
-  .modal-overlay.open { display: flex; }
-
-  .camera-video-area {
-    position: relative;
-    flex: 1;
-    overflow: hidden;
-  }
-
-  #camera-feed {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .plate-overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-  }
-  .plate-target {
-    width: 75%;
-    height: 90px;
-    border: 3px solid var(--gold);
-    border-radius: 6px;
-    box-shadow: 0 0 0 2000px rgba(0,0,0,0.5);
-  }
-
-  .camera-top-bar {
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    padding: 16px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 100%);
-    z-index: 2;
-  }
-  .camera-top-bar-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--white);
-  }
-  .camera-close-btn {
-    background: rgba(255,255,255,0.15);
-    border: none;
-    color: var(--white);
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    font-size: 22px;
-    line-height: 1;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-  }
-
-  .camera-bottom-bar {
-    background: rgba(0,0,0,0.85);
-    padding: 16px 24px calc(16px + env(safe-area-inset-bottom, 0px));
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    flex-shrink: 0;
-  }
-
-  #ocr-status {
-    min-height: 20px;
-    text-align: center;
-    font-size: 14px;
-    color: var(--gold);
-  }
-
-  .camera-hint {
-    color: rgba(255,255,255,0.6);
-    font-size: 13px;
-    text-align: center;
-    line-height: 1.4;
-  }
-
-  .camera-btn-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 40px;
-    width: 100%;
-  }
-
-  .capture-btn {
-    width: 76px;
-    height: 76px;
-    border-radius: 50%;
-    border: 4px solid var(--white);
-    background: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: transform 0.1s;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .capture-btn:active { transform: scale(0.93); }
-  .capture-btn-inner {
-    width: 58px;
-    height: 58px;
-    border-radius: 50%;
-    background: var(--gold);
-    pointer-events: none;
-  }
-
-  .camera-cancel-btn {
-    background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: var(--radius-md);
-    color: var(--white);
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
-    font-weight: 500;
-    padding: 10px 22px;
-    cursor: pointer;
-  }
-
   /* ── SUCCESS TOAST ── */
   .toast {
     position: fixed;
@@ -779,18 +611,6 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
       <input class="search-input" id="checkin-search" type="text" placeholder="Name, phone, or plate number…" autocomplete="off" autocorrect="off">
     </div>
-    <div style="text-align:center; margin-top:10px;">
-      <button onclick="openCamera(&#39;checkin&#39;)" style="
-        background:none; border:none; cursor:pointer;
-        color:var(--text-muted); font-family:&#39;Inter&#39;,sans-serif;
-        font-size:13px; font-weight:500;
-        display:inline-flex; align-items:center; gap:6px;
-        padding:4px 8px;
-      ">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:14px;height:14px;stroke-width:2;"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-        or scan license plate
-      </button>
-    </div>
   </div>
   <div id="checkin-results" class="result-area"></div>
 </div>
@@ -831,12 +651,7 @@
 
   <div class="form-section">
     <label>License Plate</label>
-    <div class="plate-input-wrap">
-      <input class="form-input" id="f-plate" type="text" placeholder="ABC 1234" autocomplete="off" oninput="this.value=this.value.toUpperCase()">
-      <button class="plate-cam-btn" onclick="openCamera(&#39;add&#39;)" title="Scan plate">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-      </button>
-    </div>
+    <input class="form-input" id="f-plate" type="text" placeholder="ABC 1234" autocomplete="off" oninput="this.value=this.value.toUpperCase()" style="text-transform:uppercase; letter-spacing:0.1em; font-family:&#39;Syne&#39;,sans-serif; font-size:20px;">
   </div>
 
   <div class="form-section">
@@ -1022,7 +837,7 @@
     </div></div>
   </div>
   <div style="padding: 24px 20px 8px; text-align:center;">
-    <div style="font-size:11px; color:var(--text-secondary); font-weight:500;">Version 1.0.3</div>
+    <div style="font-size:11px; color:var(--text-secondary); font-weight:500;">Version 1.0.4</div>
   </div>
 </div>
 
@@ -1035,76 +850,6 @@
   <div id="detail-content"></div>
 </div>
 
-<!-- ══════════════ CAMERA MODAL ══════════════ -->
-<div class="modal-overlay" id="camera-modal">
-  <div class="camera-video-area">
-    <video id="camera-feed" autoplay="" playsinline="" muted=""></video>
-    <div class="plate-overlay">
-      <div class="plate-target"></div>
-    </div>
-    <div class="camera-top-bar">
-      <div class="camera-top-bar-title">Scan Plate</div>
-      <button class="camera-close-btn" onclick="closeCamera()">×</button>
-    </div>
-  </div>
-  <div class="camera-bottom-bar">
-    <div id="ocr-scan-ui">
-      <div class="camera-hint">Line up the plate inside the box, then tap the button</div>
-      <div id="ocr-status"></div>
-      <div class="camera-btn-row">
-        <button class="camera-cancel-btn" onclick="closeCamera()">Cancel</button>
-        <button class="capture-btn" onclick="captureFrame()" aria-label="Capture">
-          <div class="capture-btn-inner"></div>
-        </button>
-        <div style="width:80px"></div>
-      </div>
-    </div>
-    <div id="ocr-confirm" style="display:none; flex-direction:column; align-items:center; gap:14px; width:100%;">
-      <div style="font-size:13px; color:rgba(255,255,255,0.6);">Detected plate — correct if needed:</div>
-      <input id="ocr-edit" type="text" style="
-        width:100%; padding:14px 16px;
-        background:rgba(255,255,255,0.1);
-        border:2px solid var(--gold);
-        border-radius:10px;
-        color:var(--white);
-        font-family:&#39;Syne&#39;,sans-serif;
-        font-size:26px;
-        font-weight:800;
-        letter-spacing:0.1em;
-        text-align:center;
-        text-transform:uppercase;
-        outline:none;
-      ">
-      <div style="display:flex; gap:12px; width:100%;">
-        <button onclick="retryCapture()" style="
-          flex:1; padding:14px;
-          background:rgba(255,255,255,0.08);
-          border:1px solid rgba(255,255,255,0.2);
-          border-radius:10px;
-          color:var(--white);
-          font-family:&#39;Inter&#39;,sans-serif;
-          font-size:15px; font-weight:500;
-          cursor:pointer;">
-          Retry
-        </button>
-        <button onclick="confirmPlate()" style="
-          flex:2; padding:14px;
-          background:var(--gold);
-          border:none;
-          border-radius:10px;
-          color:var(--surface);
-          font-family:&#39;Inter&#39;,sans-serif;
-          font-size:16px; font-weight:700;
-          cursor:pointer;">
-          Use This Plate
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Hidden canvas for frame capture -->
-<canvas id="capture-canvas"></canvas>
 
 <!-- ══════════════ TOAST ══════════════ -->
 <div class="toast" id="toast">
@@ -1218,7 +963,7 @@ function del(store, key) {
 let currentFilter = 'all';
 let currentPlan = 'basic';
 let cameraTarget = 'add'; // 'add' | 'checkin'
-let cameraStream = null;
+
 let toastTimer = null;
 
 // ════════════════════════════════════════════════
@@ -1586,184 +1331,6 @@ async function renderDashboard() {
       </div>
     </div>`;
   }).join('');
-}
-
-// ════════════════════════════════════════════════
-// CAMERA / OCR
-// ════════════════════════════════════════════════
-async function openCamera(target) {
-  cameraTarget = target;
-  document.getElementById('camera-modal').classList.add('open');
-  document.getElementById('ocr-status').textContent = '';
-
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } }
-    });
-    cameraStream = stream;
-    const vid = document.getElementById('camera-feed');
-    vid.srcObject = stream;
-    vid.play();
-  } catch (err) {
-    document.getElementById('ocr-status').textContent = 'Camera not available — type the plate manually.';
-  }
-}
-
-function retryCapture() {
-  document.getElementById('ocr-confirm').style.display = 'none';
-  document.getElementById('ocr-scan-ui').style.display = 'block';
-  document.getElementById('ocr-status').textContent = '';
-}
-
-function confirmPlate() {
-  const text = document.getElementById('ocr-edit').value.trim().toUpperCase();
-  if (!text) return;
-  if (cameraTarget === 'add') {
-    document.getElementById('f-plate').value = text;
-  } else {
-    document.getElementById('checkin-search').value = text;
-    document.getElementById('checkin-search').dispatchEvent(new Event('input'));
-  }
-  closeCamera();
-}
-
-function closeCamera() {
-  document.getElementById('camera-modal').classList.remove('open');
-  document.getElementById('ocr-confirm').style.display = 'none';
-  document.getElementById('ocr-scan-ui').style.display = 'block';
-  document.getElementById('ocr-status').textContent = '';
-  if (cameraStream) {
-    cameraStream.getTracks().forEach(t => t.stop());
-    cameraStream = null;
-  }
-}
-
-async function captureFrame() {
-  const video = document.getElementById('camera-feed');
-  const canvas = document.getElementById('capture-canvas');
-  const status = document.getElementById('ocr-status');
-
-  canvas.width = video.videoWidth || 640;
-  canvas.height = video.videoHeight || 480;
-  const ctx = canvas.getContext('2d');
-  ctx.drawImage(video, 0, 0);
-
-  // Crop canvas to match exactly what's inside the yellow box overlay.
-  // The box CSS is: width 75%, centered horizontally, height 90px centered vertically.
-  // We replicate those proportions on the captured frame.
-  const vidW = canvas.width;
-  const vidH = canvas.height;
-
-  // Horizontal: box is 75% wide, centered → 12.5% margin each side
-  const cropX = vidW * 0.125;
-  const cropW = vidW * 0.75;
-
-  // Vertical: the video fills the top portion of the modal (above the bottom bar).
-  // The box is centered in that video area. We use the center 25% of height.
-  const cropY = vidH * 0.375;
-  const cropH = vidH * 0.25;
-
-  const cropCanvas = document.createElement('canvas');
-  cropCanvas.width = cropW * 2;
-  cropCanvas.height = cropH * 2;
-  const cropCtx = cropCanvas.getContext('2d');
-
-  // Upscale for better OCR
-  cropCtx.drawImage(canvas, cropX, cropY, cropW, cropH, 0, 0, cropW*2, cropH*2);
-
-  // Enhance contrast
-  const imgData = cropCtx.getImageData(0, 0, cropCanvas.width, cropCanvas.height);
-  const d = imgData.data;
-  for (let i = 0; i < d.length; i += 4) {
-    const gray = 0.299*d[i] + 0.587*d[i+1] + 0.114*d[i+2];
-    const contrast = ((gray - 128) * 1.5) + 128;
-    const clamped = Math.max(0, Math.min(255, contrast));
-    d[i] = d[i+1] = d[i+2] = clamped;
-  }
-  cropCtx.putImageData(imgData, 0, 0);
-
-  status.textContent = 'Reading plate…';
-
-  if (typeof Tesseract === 'undefined') {
-    status.textContent = 'Loading OCR…';
-    await loadTesseract();
-  }
-
-  try {
-    const result = await Tesseract.recognize(cropCanvas, 'eng', {
-      logger: () => {},
-      tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 '
-    });
-
-    const raw = result.data.text.trim().toUpperCase().replace(/[^A-Z0-9\s]/g, '').replace(/\s+/g,' ').trim();
-    const tokens = raw.split(' ').filter(t => t.length >= 2);
-
-    // Words that will NEVER be a plate number
-    const NEVER_PLATE = new Set([
-      'ALABAMA','ALASKA','ARIZONA','ARKANSAS','CALIFORNIA','COLORADO','CONNECTICUT',
-      'DELAWARE','FLORIDA','GEORGIA','HAWAII','IDAHO','ILLINOIS','INDIANA','IOWA',
-      'KANSAS','KENTUCKY','LOUISIANA','MAINE','MARYLAND','MASSACHUSETTS','MICHIGAN',
-      'MINNESOTA','MISSISSIPPI','MISSOURI','MONTANA','NEBRASKA','NEVADA','HAMPSHIRE',
-      'JERSEY','MEXICO','YORK','CAROLINA','DAKOTA','OHIO','OKLAHOMA','OREGON',
-      'PENNSYLVANIA','RHODE','ISLAND','TENNESSEE','TEXAS','UTAH','VERMONT',
-      'VIRGINIA','WASHINGTON','WISCONSIN','WYOMING',
-      'HEART','DIXIE','VOLUNTEER','SUNSHINE','PEACH','MAGNOLIA','HOSPITALITY',
-      'GOD','BLESS','AMERICA','UNITED','STATES','WWW','COM','GOV','NET','ORG',
-      'TRAVEL','DRIVE','FULL','SERVICE','WASH','AUTO','COUNTY','CITY','STATE',
-      'THE','AND','FOR','OF','IN','IS','IT','BE','AS','AT','SO','WE','HE',
-      'BY','OR','ON','DO','IF','ME','MY','UP','AN','GO','NO','US','AM',
-      'LOVE','LIVE','LIFE','BORN','FREE','LAND','HOME','SOUL','WILD','RIDE',
-      'ROAD','BLUE','GOLD','STAR','FLAG','HERO','PRAY','FAITH','HOPE','GRACE',
-      'PEACE','POWER','PRIDE','BRAVE','TRUE','REAL','GOOD','GREAT','BACK',
-      'NEVER','ALWAYS','ONLY','JUST','EVEN','ALSO','FROM','WITH','THIS','THAT',
-      'YOUR','THEM','THEY','WHEN','WHAT','WILL','BEEN','HAVE','MORE',
-    ]);
-
-    function scorePlate(t) {
-      if (t.length < 4 || t.length > 8) return -100;
-      if (NEVER_PLATE.has(t)) return -100;
-
-      const hasDigit  = /\d/.test(t);
-      const hasLetter = /[A-Z]/.test(t);
-
-      let score = 0;
-      score += (t.length >= 5 && t.length <= 8) ? 20 : 5;
-      // Mixed alphanumeric is the strongest signal — "AOCU9TE" wins over "AMERICA"
-      score += (hasDigit && hasLetter) ? 40 : 0;
-      score += (!hasLetter) ? -20 : 0;
-      score += (!hasDigit && t.length <= 5) ? -15 : 0;
-      return score;
-    }
-
-    const scored = tokens
-      .map(t => ({ t, score: scorePlate(t) }))
-      .filter(x => x.score > 0)
-      .sort((a, b) => b.score - a.score);
-
-    const text = scored.length ? scored[0].t : '';
-
-    if (text.length >= 2) {
-      status.textContent = '';
-      document.getElementById('ocr-scan-ui').style.display = 'none';
-      const confirm = document.getElementById('ocr-confirm');
-      confirm.style.display = 'flex';
-      document.getElementById('ocr-edit').value = text;
-    } else {
-      status.textContent = 'Could not read plate — try again or type it manually.';
-    }
-  } catch (err) {
-    status.textContent = 'OCR failed. Type the plate manually.';
-  }
-}
-
-function loadTesseract() {
-  return new Promise((res, rej) => {
-    const s = document.createElement('script');
-    s.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
-    s.onload = res;
-    s.onerror = rej;
-    document.head.appendChild(s);
-  });
 }
 
 // ════════════════════════════════════════════════
