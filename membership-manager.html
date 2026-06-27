@@ -1,0 +1,1846 @@
+<!DOCTYPE html>
+<!-- saved from url=(0061)file:///C:/Users/edmun/Downloads/magic-city-membership_1.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Magic City Members">
+<meta name="theme-color" content="#0A1628">
+<title>Magic City Detailing — Members</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --navy: #0A1628;
+    --navy-light: #132038;
+    --aqua: #00C2CB;
+    --aqua-dim: #00909A;
+    --amber: #F5A623;
+    --amber-dim: #C4841A;
+    --white: #FFFFFF;
+    --gray-50: #F8FAFC;
+    --gray-100: #EFF3F8;
+    --gray-200: #DDE4EE;
+    --gray-400: #8B9BB4;
+    --gray-600: #4A5E7A;
+    --green: #22C55E;
+    --red: #EF4444;
+    --yellow: #F59E0B;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-xl: 28px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  .nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--navy-light);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    z-index: 100;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .nav-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 12px 0 10px;
+    background: none;
+    border: none;
+    color: var(--gray-400);
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+  .nav-btn svg { width: 22px; height: 22px; stroke-width: 1.8; }
+  .nav-btn.active { color: var(--aqua); }
+  .nav-btn.active svg { stroke: var(--aqua); }
+
+  /* ── PAGES ── */
+  .page { display: none; padding: 0 0 90px; min-height: 100dvh; }
+  .page.active { display: block; }
+
+  /* ── HEADER ── */
+  .page-header {
+    padding: 52px 24px 20px;
+    background: linear-gradient(180deg, var(--navy-light) 0%, transparent 100%);
+  }
+  .page-header .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--aqua);
+    margin-bottom: 6px;
+  }
+  .page-header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--white);
+  }
+
+  /* ── CHECKIN PAGE ── */
+  .checkin-search {
+    padding: 0 20px 20px;
+  }
+  .search-wrap {
+    position: relative;
+  }
+  .search-wrap svg {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    stroke: var(--gray-400);
+    stroke-width: 1.8;
+    pointer-events: none;
+  }
+  .search-input {
+    width: 100%;
+    padding: 14px 14px 14px 44px;
+    background: var(--navy-light);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius-md);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .search-input:focus { border-color: var(--aqua); }
+  .search-input::placeholder { color: var(--gray-400); }
+
+  .scan-plate-btn {
+    width: 100%;
+    margin-top: 12px;
+    padding: 14px;
+    background: rgba(0,194,203,0.12);
+    border: 1px dashed var(--aqua-dim);
+    border-radius: var(--radius-md);
+    color: var(--aqua);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background 0.15s;
+  }
+  .scan-plate-btn:active { background: rgba(0,194,203,0.2); }
+  .scan-plate-btn svg { width: 20px; height: 20px; stroke-width: 1.8; }
+
+  /* ── RESULT CARD ── */
+  .result-area { padding: 0 20px; }
+
+  .member-card {
+    background: var(--navy-light);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: border-color 0.15s, transform 0.1s;
+  }
+  .member-card:active { transform: scale(0.99); }
+
+  .member-card-top {
+    padding: 18px 18px 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .member-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--aqua);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--navy);
+    flex-shrink: 0;
+  }
+
+  .member-info { flex: 1; min-width: 0; }
+  .member-name {
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--white);
+    margin-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .member-phone { font-size: 13px; color: var(--gray-400); }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .status-badge.active { background: rgba(34,197,94,0.15); color: #4ADE80; }
+  .status-badge.inactive { background: rgba(239,68,68,0.12); color: #F87171; }
+  .status-badge.pending { background: rgba(245,158,11,0.15); color: #FCD34D; }
+  .status-badge svg { width: 10px; height: 10px; }
+
+  /* Alabama plate signature element */
+  .plate-chip {
+    margin: 0 18px 16px;
+    background: #F8F5E8;
+    border-radius: 6px;
+    border: 2px solid #C9B96A;
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .plate-chip::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #002868 33%, #BF0A30 33% 66%, #002868 66%);
+  }
+  .plate-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: #1A1A1A;
+    letter-spacing: 0.08em;
+    margin-top: 2px;
+  }
+  .plate-state {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #444;
+    text-align: right;
+    line-height: 1.3;
+  }
+  .plate-state span { color: #002868; font-size: 11px; }
+
+  .member-card-footer {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 10px 18px;
+    display: flex;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--gray-400);
+  }
+  .member-card-footer strong { color: var(--white); }
+
+  /* Big check-in button */
+  .checkin-action {
+    padding: 0 20px 16px;
+  }
+  .btn-primary {
+    width: 100%;
+    padding: 16px;
+    background: var(--aqua);
+    border: none;
+    border-radius: var(--radius-md);
+    color: var(--navy);
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.15s, transform 0.1s;
+    letter-spacing: 0.01em;
+  }
+  .btn-primary:active { transform: scale(0.99); background: var(--aqua-dim); }
+  .btn-primary svg { width: 20px; height: 20px; stroke-width: 2.2; }
+
+  .btn-amber {
+    width: 100%;
+    padding: 16px;
+    background: var(--amber);
+    border: none;
+    border-radius: var(--radius-md);
+    color: var(--navy);
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .btn-amber:active { transform: scale(0.99); background: var(--amber-dim); }
+  .btn-amber svg { width: 20px; height: 20px; stroke-width: 2.2; }
+
+  .btn-ghost {
+    width: 100%;
+    padding: 14px;
+    background: none;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: var(--radius-md);
+    color: var(--gray-400);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+    margin-top: 10px;
+  }
+  .btn-ghost:active { border-color: var(--white); color: var(--white); }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 48px 32px;
+    color: var(--gray-400);
+  }
+  .empty-state svg {
+    width: 48px; height: 48px;
+    stroke: var(--gray-600);
+    stroke-width: 1.5;
+    margin-bottom: 16px;
+  }
+  .empty-state h3 { font-size: 17px; color: var(--white); margin-bottom: 6px; }
+  .empty-state p { font-size: 14px; line-height: 1.6; }
+
+  /* ── MEMBERS LIST ── */
+  .members-controls {
+    padding: 0 20px 16px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .filter-chip {
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: none;
+    color: var(--gray-400);
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-chip.active {
+    background: rgba(0,194,203,0.15);
+    border-color: var(--aqua-dim);
+    color: var(--aqua);
+  }
+
+  .members-list { padding: 0 20px; }
+
+  /* ── ADD MEMBER FORM ── */
+  .form-section { padding: 0 20px 12px; }
+  .form-section label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gray-400);
+    margin-bottom: 8px;
+  }
+  .form-input {
+    width: 100%;
+    padding: 14px 16px;
+    background: var(--navy-light);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius-md);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.15s;
+    -webkit-appearance: none;
+  }
+  .form-input:focus { border-color: var(--aqua); }
+  .form-input::placeholder { color: var(--gray-600); }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .plan-picker {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .plan-option {
+    background: var(--navy-light);
+    border: 1.5px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius-md);
+    padding: 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+  .plan-option.selected {
+    border-color: var(--amber);
+    background: rgba(245,166,35,0.08);
+  }
+  .plan-option .plan-name {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--white);
+    margin-bottom: 2px;
+  }
+  .plan-option .plan-price {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--amber);
+  }
+  .plan-option .plan-freq {
+    font-size: 11px;
+    color: var(--gray-400);
+  }
+
+  /* Plate scan input special */
+  .plate-input-wrap {
+    position: relative;
+  }
+  .plate-input-wrap .form-input {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    padding-right: 52px;
+  }
+  .plate-cam-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--aqua);
+    cursor: pointer;
+    padding: 6px;
+  }
+  .plate-cam-btn svg { width: 22px; height: 22px; stroke-width: 1.8; }
+
+  /* ── CAMERA MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 200;
+    flex-direction: column;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .camera-view {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    gap: 20px;
+  }
+
+  #video-stream {
+    width: 100%;
+    max-width: 600px;
+    border-radius: var(--radius-lg);
+    background: #000;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+  }
+
+  .plate-frame-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+  }
+  .plate-frame-wrap video {
+    width: 100%;
+    border-radius: var(--radius-lg);
+    background: #000;
+    display: block;
+  }
+  .plate-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+  .plate-target {
+    width: 70%;
+    height: 80px;
+    border: 2.5px solid var(--amber);
+    border-radius: 6px;
+    box-shadow: 0 0 0 2000px rgba(0,0,0,0.45);
+  }
+
+  .camera-hint {
+    color: var(--gray-200);
+    font-size: 15px;
+    text-align: center;
+    max-width: 300px;
+    line-height: 1.5;
+  }
+
+  .camera-actions {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 360px;
+    gap: 10px;
+    padding-bottom: env(safe-area-inset-bottom, 16px);
+  }
+
+  .capture-btn {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 3px solid var(--white);
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin: 0 auto;
+    transition: transform 0.1s;
+  }
+  .capture-btn:active { transform: scale(0.95); }
+  .capture-btn-inner {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--amber);
+  }
+
+  #ocr-status {
+    min-height: 24px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--aqua);
+  }
+
+  /* ── SUCCESS TOAST ── */
+  .toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-80px);
+    background: var(--green);
+    color: #fff;
+    padding: 12px 22px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 15px;
+    z-index: 300;
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast svg { width: 18px; height: 18px; stroke-width: 2.5; }
+
+  .toast.error { background: var(--red); }
+  .toast.warning { background: var(--yellow); color: var(--navy); }
+
+  /* ── DETAIL VIEW ── */
+  .detail-back {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 52px 20px 16px;
+    color: var(--aqua);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    background: none;
+    border: none;
+    width: 100%;
+  }
+  .detail-back svg { width: 18px; height: 18px; stroke-width: 2; }
+
+  .detail-hero {
+    padding: 0 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    margin-bottom: 20px;
+  }
+  .detail-avatar {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: var(--aqua);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--navy);
+    flex-shrink: 0;
+  }
+  .detail-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--white);
+  }
+  .detail-since { font-size: 13px; color: var(--gray-400); margin-top: 2px; }
+
+  .detail-section {
+    padding: 0 20px 20px;
+  }
+  .detail-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gray-600);
+    margin-bottom: 12px;
+  }
+  .detail-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .detail-row:last-child { border-bottom: none; }
+  .detail-row svg { width: 18px; height: 18px; stroke: var(--gray-400); stroke-width: 1.8; flex-shrink: 0; }
+  .detail-row-label { font-size: 13px; color: var(--gray-400); flex: 1; }
+  .detail-row-value { font-size: 15px; font-weight: 500; color: var(--white); text-align: right; }
+
+  .checkin-history {
+    padding: 0 20px 8px;
+  }
+  .checkin-entry {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .checkin-entry:last-child { border-bottom: none; }
+  .checkin-entry-date { font-size: 14px; color: var(--white); }
+  .checkin-entry-time { font-size: 12px; color: var(--gray-400); }
+
+  .plan-banner {
+    margin: 0 20px 20px;
+    background: rgba(245,166,35,0.1);
+    border: 1px solid rgba(245,166,35,0.25);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .plan-banner-label { font-size: 12px; color: var(--amber-dim); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; margin-bottom: 2px; }
+  .plan-banner-name { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: var(--amber); }
+  .plan-banner-exp { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
+
+  .divider { height: 1px; background: rgba(255,255,255,0.06); margin: 0 20px 20px; }
+
+  /* ── STATS PAGE ── */
+  .stats-grid {
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    background: var(--navy-light);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--radius-md);
+    padding: 16px;
+  }
+  .stat-label { font-size: 12px; color: var(--gray-400); margin-bottom: 6px; font-weight: 500; }
+  .stat-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 34px;
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1;
+  }
+  .stat-number.aqua { color: var(--aqua); }
+  .stat-number.amber { color: var(--amber); }
+
+  /* ── MISC ── */
+  .section-pad { height: 16px; }
+  .danger-zone { padding: 0 20px 24px; }
+  .btn-danger {
+    width: 100%;
+    padding: 14px;
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.25);
+    border-radius: var(--radius-md);
+    color: #F87171;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-danger:active { background: rgba(239,68,68,0.2); }
+
+  canvas { display: none; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ CHECK-IN PAGE ══════════════ -->
+<div id="page-checkin" class="page active">
+  <div class="page-header">
+    <div class="eyebrow">Magic City Detailing</div>
+    <h1>Check In</h1>
+  </div>
+  <div class="checkin-search">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
+      <input class="search-input" id="checkin-search" type="text" placeholder="Name, phone, or plate number…" autocomplete="off" autocorrect="off">
+    </div>
+    <button class="scan-plate-btn" onclick="openCamera(&#39;checkin&#39;)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="3" width="20" height="14" rx="2"></rect><path d="M8 21h8M12 17v4"></path><path d="M7 8h.01M17 8h.01"></path></svg>
+      Scan License Plate
+    </button>
+  </div>
+  <div id="checkin-results" class="result-area"></div>
+</div>
+
+<!-- ══════════════ MEMBERS PAGE ══════════════ -->
+<div id="page-members" class="page">
+  <div class="page-header">
+    <div class="eyebrow">Magic City Detailing</div>
+    <h1>Members</h1>
+  </div>
+  <div class="members-controls">
+    <button class="filter-chip active" data-filter="all" onclick="setFilter(this,&#39;all&#39;)">All</button>
+    <button class="filter-chip" data-filter="active" onclick="setFilter(this,&#39;active&#39;)">Active</button>
+    <button class="filter-chip" data-filter="inactive" onclick="setFilter(this,&#39;inactive&#39;)">Inactive</button>
+  </div>
+  <div id="members-list" class="members-list">
+  <div class="member-card" onclick="openDetail(1)">
+    <div class="member-card-top">
+      <div class="member-avatar">JP</div>
+      <div class="member-info">
+        <div class="member-name">James Patterson</div>
+        <div class="member-phone">(205) 555-0142</div>
+      </div>
+      <span class="status-badge active">● Active</span>
+    </div>
+    
+  <div class="plate-chip">
+    <div>
+      <div class="plate-text">ALB 4421</div>
+    </div>
+    <div class="plate-state"><span>ALABAMA</span><br>Heart of Dixie</div>
+  </div>
+    <div class="member-card-footer">
+      <span>Premium Plan</span>
+      <span>·</span><strong>2021 Black Ford F-150</strong>
+    </div>
+  </div>
+  <div class="member-card" onclick="openDetail(2)">
+    <div class="member-card-top">
+      <div class="member-avatar">MG</div>
+      <div class="member-info">
+        <div class="member-name">Maria Gonzalez</div>
+        <div class="member-phone">(205) 555-0187</div>
+      </div>
+      <span class="status-badge active">● Active</span>
+    </div>
+    
+  <div class="plate-chip">
+    <div>
+      <div class="plate-text">XTR 9923</div>
+    </div>
+    <div class="plate-state"><span>ALABAMA</span><br>Heart of Dixie</div>
+  </div>
+    <div class="member-card-footer">
+      <span>Basic Plan</span>
+      <span>·</span><strong>2019 Silver Honda Accord</strong>
+    </div>
+  </div>
+  <div class="member-card" onclick="openDetail(3)">
+    <div class="member-card-top">
+      <div class="member-avatar">DK</div>
+      <div class="member-info">
+        <div class="member-name">David Kim</div>
+        <div class="member-phone">(205) 555-0231</div>
+      </div>
+      <span class="status-badge active">● Active</span>
+    </div>
+    
+  <div class="plate-chip">
+    <div>
+      <div class="plate-text">DNL 7712</div>
+    </div>
+    <div class="plate-state"><span>ALABAMA</span><br>Heart of Dixie</div>
+  </div>
+    <div class="member-card-footer">
+      <span>Unlimited Plan</span>
+      <span>·</span><strong>2022 White Toyota RAV4</strong>
+    </div>
+  </div>
+  <div class="member-card" onclick="openDetail(4)">
+    <div class="member-card-top">
+      <div class="member-avatar">SM</div>
+      <div class="member-info">
+        <div class="member-name">Sarah Mitchell</div>
+        <div class="member-phone">(205) 555-0399</div>
+      </div>
+      <span class="status-badge inactive">● Inactive</span>
+    </div>
+    
+  <div class="plate-chip">
+    <div>
+      <div class="plate-text">BCK 5544</div>
+    </div>
+    <div class="plate-state"><span>ALABAMA</span><br>Heart of Dixie</div>
+  </div>
+    <div class="member-card-footer">
+      <span>Basic Plan</span>
+      <span>·</span><strong>2018 Blue Chevy Malibu</strong>
+    </div>
+  </div></div>
+</div>
+
+<!-- ══════════════ ADD MEMBER PAGE ══════════════ -->
+<div id="page-add" class="page">
+  <div class="page-header">
+    <div class="eyebrow">Magic City Detailing</div>
+    <h1>New Member</h1>
+  </div>
+
+  <div class="form-section">
+    <label>Full Name</label>
+    <input class="form-input" id="f-name" type="text" placeholder="First Last" autocomplete="off">
+  </div>
+  <div class="form-section">
+    <label>Phone Number</label>
+    <input class="form-input" id="f-phone" type="tel" placeholder="(205) 555-0100" autocomplete="off">
+  </div>
+  <div class="form-section">
+    <label>Email (optional)</label>
+    <input class="form-input" id="f-email" type="email" placeholder="name@example.com" autocomplete="off">
+  </div>
+
+  <div class="form-section">
+    <label>License Plate</label>
+    <div class="plate-input-wrap">
+      <input class="form-input" id="f-plate" type="text" placeholder="ABC 1234" autocomplete="off" oninput="this.value=this.value.toUpperCase()">
+      <button class="plate-cam-btn" onclick="openCamera(&#39;add&#39;)" title="Scan plate">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <label>Vehicle</label>
+    <div class="form-row">
+      <input class="form-input" id="f-year" type="number" placeholder="Year" min="1990" max="2030" style="text-align:center">
+      <input class="form-input" id="f-color" type="text" placeholder="Color" autocomplete="off">
+    </div>
+    <div style="height:10px"></div>
+    <input class="form-input" id="f-vehicle" type="text" placeholder="Make &amp; Model (e.g., Toyota Camry)" autocomplete="off">
+  </div>
+
+  <div class="form-section">
+    <label>Membership Plan</label>
+    <div class="plan-picker">
+      <div class="plan-option selected" data-plan="basic" onclick="selectPlan(this,&#39;basic&#39;)">
+        <div class="plan-name">Basic</div>
+        <div class="plan-price">$29</div>
+        <div class="plan-freq">/month</div>
+      </div>
+      <div class="plan-option" data-plan="premium" onclick="selectPlan(this,&#39;premium&#39;)">
+        <div class="plan-name">Premium</div>
+        <div class="plan-price">$49</div>
+        <div class="plan-freq">/month</div>
+      </div>
+      <div class="plan-option" data-plan="unlimited" onclick="selectPlan(this,&#39;unlimited&#39;)">
+        <div class="plan-name">Unlimited</div>
+        <div class="plan-price">$79</div>
+        <div class="plan-freq">/month</div>
+      </div>
+      <div class="plan-option" data-plan="vip" onclick="selectPlan(this,&#39;vip&#39;)">
+        <div class="plan-name">VIP</div>
+        <div class="plan-price">$99</div>
+        <div class="plan-freq">/month</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <label>Status</label>
+    <select class="form-input" id="f-status">
+      <option value="active">Active</option>
+      <option value="inactive">Inactive</option>
+      <option value="pending">Pending Payment</option>
+    </select>
+  </div>
+
+  <div class="form-section">
+    <label>Notes (optional)</label>
+    <textarea class="form-input" id="f-notes" rows="3" placeholder="Any special notes about this member…" style="resize:none; line-height:1.5"></textarea>
+  </div>
+
+  <div style="padding: 4px 20px 24px; display:flex; flex-direction:column; gap:10px;">
+    <button class="btn-amber" onclick="saveMember()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      Add Member
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════ DASHBOARD PAGE ══════════════ -->
+<div id="page-dash" class="page">
+  <div class="page-header">
+    <div class="eyebrow">Magic City Detailing</div>
+    <h1>Dashboard</h1>
+  </div>
+  <div class="stats-grid" id="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Total Members</div>
+      <div class="stat-number">4</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Active</div>
+      <div class="stat-number aqua">3</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Today's Check-ins</div>
+      <div class="stat-number amber">3</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Total Check-ins</div>
+      <div class="stat-number">15</div>
+    </div>
+  </div>
+  <div style="padding: 0 20px 12px;">
+    <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--gray-600); margin-bottom:12px;">Recent Check-ins</div>
+    <div id="recent-checkins"><div class="checkin-entry" style="border-bottom:1px solid rgba(255,255,255,0.05); padding: 10px 0;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--aqua);display:flex;align-items:center;justify-content:center;font-family:&#39;Syne&#39;,sans-serif;font-size:13px;font-weight:800;color:var(--navy);flex-shrink:0;">DK</div>
+        <div>
+          <div style="font-size:15px;font-weight:500;color:var(--white);">David Kim</div>
+          <div style="font-size:12px;color:var(--gray-400);">DNL 7712</div>
+        </div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:13px;color:var(--white);">7:38 PM</div>
+        <div style="font-size:11px;color:var(--gray-400);">Jun 26, 2026</div>
+      </div>
+    </div><div class="checkin-entry" style="border-bottom:1px solid rgba(255,255,255,0.05); padding: 10px 0;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--aqua);display:flex;align-items:center;justify-content:center;font-family:&#39;Syne&#39;,sans-serif;font-size:13px;font-weight:800;color:var(--navy);flex-shrink:0;">MG</div>
+        <div>
+          <div style="font-size:15px;font-weight:500;color:var(--white);">Maria Gonzalez</div>
+          <div style="font-size:12px;color:var(--gray-400);">XTR 9923</div>
+        </div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:13px;color:var(--white);">7:38 PM</div>
+        <div style="font-size:11px;color:var(--gray-400);">Jun 26, 2026</div>
+      </div>
+    </div><div class="checkin-entry" style="border-bottom:1px solid rgba(255,255,255,0.05); padding: 10px 0;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--aqua);display:flex;align-items:center;justify-content:center;font-family:&#39;Syne&#39;,sans-serif;font-size:13px;font-weight:800;color:var(--navy);flex-shrink:0;">JP</div>
+        <div>
+          <div style="font-size:15px;font-weight:500;color:var(--white);">James Patterson</div>
+          <div style="font-size:12px;color:var(--gray-400);">ALB 4421</div>
+        </div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:13px;color:var(--white);">7:38 PM</div>
+        <div style="font-size:11px;color:var(--gray-400);">Jun 26, 2026</div>
+      </div>
+    </div><div class="checkin-entry" style="border-bottom:1px solid rgba(255,255,255,0.05); padding: 10px 0;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--aqua);display:flex;align-items:center;justify-content:center;font-family:&#39;Syne&#39;,sans-serif;font-size:13px;font-weight:800;color:var(--navy);flex-shrink:0;">DK</div>
+        <div>
+          <div style="font-size:15px;font-weight:500;color:var(--white);">David Kim</div>
+          <div style="font-size:12px;color:var(--gray-400);">DNL 7712</div>
+        </div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:13px;color:var(--white);">7:38 PM</div>
+        <div style="font-size:11px;color:var(--gray-400);">Jun 19, 2026</div>
+      </div>
+    </div><div class="checkin-entry" style="border-bottom:1px solid rgba(255,255,255,0.05); padding: 10px 0;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--aqua);display:flex;align-items:center;justify-content:center;font-family:&#39;Syne&#39;,sans-serif;font-size:13px;font-weight:800;color:var(--navy);flex-shrink:0;">MG</div>
+        <div>
+          <div style="font-size:15px;font-weight:500;color:var(--white);">Maria Gonzalez</div>
+          <div style="font-size:12px;color:var(--gray-400);">XTR 9923</div>
+        </div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:13px;color:var(--white);">7:38 PM</div>
+        <div style="font-size:11px;color:var(--gray-400);">Jun 19, 2026</div>
+      </div>
+    </div><div class="checkin-entry" style="border-bottom:1px solid rgba(255,255,255,0.05); padding: 10px 0;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--aqua);display:flex;align-items:center;justify-content:center;font-family:&#39;Syne&#39;,sans-serif;font-size:13px;font-weight:800;color:var(--navy);flex-shrink:0;">JP</div>
+        <div>
+          <div style="font-size:15px;font-weight:500;color:var(--white);">James Patterson</div>
+          <div style="font-size:12px;color:var(--gray-400);">ALB 4421</div>
+        </div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:13px;color:var(--white);">7:38 PM</div>
+        <div style="font-size:11px;color:var(--gray-400);">Jun 19, 2026</div>
+      </div>
+    </div><div class="checkin-entry" style="border-bottom:1px solid rgba(255,255,255,0.05); padding: 10px 0;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--aqua);display:flex;align-items:center;justify-content:center;font-family:&#39;Syne&#39;,sans-serif;font-size:13px;font-weight:800;color:var(--navy);flex-shrink:0;">DK</div>
+        <div>
+          <div style="font-size:15px;font-weight:500;color:var(--white);">David Kim</div>
+          <div style="font-size:12px;color:var(--gray-400);">DNL 7712</div>
+        </div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:13px;color:var(--white);">7:38 PM</div>
+        <div style="font-size:11px;color:var(--gray-400);">Jun 12, 2026</div>
+      </div>
+    </div><div class="checkin-entry" style="border-bottom:1px solid rgba(255,255,255,0.05); padding: 10px 0;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--aqua);display:flex;align-items:center;justify-content:center;font-family:&#39;Syne&#39;,sans-serif;font-size:13px;font-weight:800;color:var(--navy);flex-shrink:0;">MG</div>
+        <div>
+          <div style="font-size:15px;font-weight:500;color:var(--white);">Maria Gonzalez</div>
+          <div style="font-size:12px;color:var(--gray-400);">XTR 9923</div>
+        </div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:13px;color:var(--white);">7:38 PM</div>
+        <div style="font-size:11px;color:var(--gray-400);">Jun 12, 2026</div>
+      </div>
+    </div></div>
+  </div>
+</div>
+
+<!-- ══════════════ DETAIL VIEW (overlay) ══════════════ -->
+<div id="detail-view" style="display: none; position: fixed; inset: 0px; background: var(--navy); z-index: 150; overflow-y: auto; padding-bottom: 90px;">
+  <button class="detail-back" onclick="closeDetail()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m15 18-6-6 6-6"></path></svg>
+    Back
+  </button>
+  <div id="detail-content">
+    <div class="detail-hero" style="padding:0 20px 24px; margin-bottom:0;">
+      <div class="detail-avatar">JP</div>
+      <div>
+        <div class="detail-name">James Patterson</div>
+        <div class="detail-since">Member since Mar 28, 2026</div>
+        <div style="margin-top:6px;"><span class="status-badge active">● Active</span></div>
+      </div>
+    </div>
+
+    <div style="height:20px"></div>
+
+    
+    <div class="plan-banner">
+      <div>
+        <div class="plan-banner-label">Current Plan</div>
+        <div class="plan-banner-name">Premium</div>
+        <div class="plan-banner-exp">Renews Mar 28, 2027</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-family:&#39;Syne&#39;,sans-serif; font-size:28px; font-weight:800; color:var(--amber);">
+          $49
+        </div>
+        <div style="font-size:12px; color:var(--gray-400);">/month</div>
+      </div>
+    </div>
+
+    
+  <div class="plate-chip">
+    <div>
+      <div class="plate-text">ALB 4421</div>
+    </div>
+    <div class="plate-state"><span>ALABAMA</span><br>Heart of Dixie</div>
+  </div>
+
+    <div class="detail-section" style="padding: 0 20px 20px; margin-top: 12px;">
+      <div class="detail-section-title">Contact</div>
+      <div class="detail-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+        <div class="detail-row-label">Phone</div>
+        <div class="detail-row-value">(205) 555-0142</div>
+      </div>
+      <div class="detail-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+        <div class="detail-row-label">Email</div>
+        <div class="detail-row-value" style="font-size:13px;">jpatterson@email.com</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="detail-section" style="padding: 0 20px 20px;">
+      <div class="detail-section-title">Vehicle</div>
+      <div class="detail-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+        <div class="detail-row-label">Vehicle</div>
+        <div class="detail-row-value">2021 Black Ford F-150</div>
+      </div>
+    </div>
+
+    
+
+    <div class="divider"></div>
+
+    <div class="detail-section" style="padding: 0 20px 20px;">
+      <div class="detail-section-title">Check-in History (5 total)</div>
+      <div class="checkin-history" style="padding:0;">
+    <div class="checkin-entry">
+      <div class="checkin-entry-date">Jun 26, 2026</div>
+      <div class="checkin-entry-time">7:38 PM</div>
+    </div>
+  
+    <div class="checkin-entry">
+      <div class="checkin-entry-date">Jun 19, 2026</div>
+      <div class="checkin-entry-time">7:38 PM</div>
+    </div>
+  
+    <div class="checkin-entry">
+      <div class="checkin-entry-date">Jun 12, 2026</div>
+      <div class="checkin-entry-time">7:38 PM</div>
+    </div>
+  
+    <div class="checkin-entry">
+      <div class="checkin-entry-date">Jun 5, 2026</div>
+      <div class="checkin-entry-time">7:38 PM</div>
+    </div>
+  
+    <div class="checkin-entry">
+      <div class="checkin-entry-date">May 29, 2026</div>
+      <div class="checkin-entry-time">7:38 PM</div>
+    </div>
+  </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div style="padding: 0 20px 12px; display:flex; flex-direction:column; gap:10px;">
+      <button class="btn-primary" onclick="toggleStatus(1,&#39;active&#39;)">
+        Deactivate Membership
+      </button>
+    </div>
+
+    <div class="danger-zone">
+      <button class="btn-danger" onclick="deleteMember(1,&#39;James Patterson&#39;)">Delete Member</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ CAMERA MODAL ══════════════ -->
+<div class="modal-overlay" id="camera-modal">
+  <div class="camera-view">
+    <div style="width:100%; max-width:600px; display:flex; align-items:center; justify-content:space-between;">
+      <div style="font-family:&#39;Syne&#39;,sans-serif; font-size:20px; font-weight:800;">Scan Plate</div>
+      <button onclick="closeCamera()" style="background:none;border:none;color:var(--gray-400);cursor:pointer;font-size:28px;line-height:1;">×</button>
+    </div>
+    <div class="plate-frame-wrap">
+      <video id="camera-feed" autoplay="" playsinline="" muted=""></video>
+      <div class="plate-overlay">
+        <div class="plate-target"></div>
+      </div>
+    </div>
+    <div class="camera-hint">Center the license plate inside the frame, then tap capture</div>
+    <div id="ocr-status"></div>
+    <div class="camera-actions">
+      <button class="capture-btn" onclick="captureFrame()">
+        <div class="capture-btn-inner"></div>
+      </button>
+      <button class="btn-ghost" onclick="closeCamera()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden canvas for frame capture -->
+<canvas id="capture-canvas"></canvas>
+
+<!-- ══════════════ TOAST ══════════════ -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg>
+  <span id="toast-text">Done</span>
+</div>
+
+<!-- ══════════════ NAV ══════════════ -->
+<nav class="nav">
+  <button class="nav-btn active" onclick="showPage(&#39;checkin&#39;,this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+    Check In
+  </button>
+  <button class="nav-btn" onclick="showPage(&#39;members&#39;,this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+    Members
+  </button>
+  <button class="nav-btn" onclick="showPage(&#39;add&#39;,this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+    Add
+  </button>
+  <button class="nav-btn" onclick="showPage(&#39;dash&#39;,this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+    Dashboard
+  </button>
+</nav>
+
+<script>
+// ════════════════════════════════════════════════
+// DB
+// ════════════════════════════════════════════════
+const DB_NAME = 'MagicCityDB', DB_VER = 2;
+let db;
+
+function openDB() {
+  return new Promise((res, rej) => {
+    const req = indexedDB.open(DB_NAME, DB_VER);
+    req.onupgradeneeded = e => {
+      const d = e.target.result;
+      if (!d.objectStoreNames.contains('members')) {
+        const ms = d.createObjectStore('members', { keyPath: 'id', autoIncrement: true });
+        ms.createIndex('plate', 'plate', { unique: false });
+        ms.createIndex('phone', 'phone', { unique: false });
+        ms.createIndex('status', 'status', { unique: false });
+      }
+      if (!d.objectStoreNames.contains('checkins')) {
+        const cs = d.createObjectStore('checkins', { keyPath: 'id', autoIncrement: true });
+        cs.createIndex('memberId', 'memberId', { unique: false });
+        cs.createIndex('ts', 'ts', { unique: false });
+      }
+    };
+    req.onsuccess = e => { db = e.target.result; res(db); };
+    req.onerror = () => rej(req.error);
+  });
+}
+
+function dbTx(store, mode, fn) {
+  return new Promise((res, rej) => {
+    const tx = db.transaction(store, mode);
+    const s = tx.objectStore(store);
+    const req = fn(s);
+    if (req) {
+      req.onsuccess = () => res(req.result);
+      req.onerror = () => rej(req.error);
+    } else {
+      tx.oncomplete = () => res();
+      tx.onerror = () => rej(tx.error);
+    }
+  });
+}
+
+function getAll(store) {
+  return new Promise((res, rej) => {
+    const tx = db.transaction(store, 'readonly');
+    const req = tx.objectStore(store).getAll();
+    req.onsuccess = () => res(req.result);
+    req.onerror = () => rej(req.error);
+  });
+}
+
+function get(store, key) {
+  return new Promise((res, rej) => {
+    const tx = db.transaction(store, 'readonly');
+    const req = tx.objectStore(store).get(key);
+    req.onsuccess = () => res(req.result);
+    req.onerror = () => rej(req.error);
+  });
+}
+
+function put(store, data) {
+  return new Promise((res, rej) => {
+    const tx = db.transaction(store, 'readwrite');
+    const req = tx.objectStore(store).put(data);
+    req.onsuccess = () => res(req.result);
+    req.onerror = () => rej(req.error);
+  });
+}
+
+function del(store, key) {
+  return new Promise((res, rej) => {
+    const tx = db.transaction(store, 'readwrite');
+    const req = tx.objectStore(store).delete(key);
+    req.onsuccess = () => res();
+    req.onerror = () => rej(req.error);
+  });
+}
+
+// ════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════
+let currentFilter = 'all';
+let currentPlan = 'basic';
+let cameraTarget = 'add'; // 'add' | 'checkin'
+let cameraStream = null;
+let toastTimer = null;
+
+// ════════════════════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════════════════════
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  if (id === 'members') renderMembers();
+  if (id === 'dash') renderDashboard();
+  if (id === 'checkin') {
+    document.getElementById('checkin-search').value = '';
+    document.getElementById('checkin-results').innerHTML = '';
+  }
+}
+
+// ════════════════════════════════════════════════
+// UTILS
+// ════════════════════════════════════════════════
+function initials(name) {
+  return name.split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase();
+}
+
+function statusBadge(status) {
+  const icons = { active: '●', inactive: '●', pending: '●' };
+  const labels = { active: 'Active', inactive: 'Inactive', pending: 'Pending' };
+  return `<span class="status-badge ${status}">${icons[status]||'●'} ${labels[status]||status}</span>`;
+}
+
+function formatDate(ts) {
+  return new Date(ts).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+function formatTime(ts) {
+  return new Date(ts).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+}
+
+function plateChip(plate) {
+  if (!plate) return '';
+  return `
+  <div class="plate-chip">
+    <div>
+      <div class="plate-text">${plate}</div>
+    </div>
+    <div class="plate-state"><span>ALABAMA</span><br>Heart of Dixie</div>
+  </div>`;
+}
+
+function memberCardHTML(m) {
+  const vehicleStr = [m.year, m.color, m.vehicle].filter(Boolean).join(' ');
+  return `
+  <div class="member-card" onclick="openDetail(${m.id})">
+    <div class="member-card-top">
+      <div class="member-avatar">${initials(m.name)}</div>
+      <div class="member-info">
+        <div class="member-name">${m.name}</div>
+        <div class="member-phone">${m.phone || '—'}</div>
+      </div>
+      ${statusBadge(m.status)}
+    </div>
+    ${m.plate ? plateChip(m.plate) : ''}
+    <div class="member-card-footer">
+      <span>${m.plan ? m.plan.charAt(0).toUpperCase()+m.plan.slice(1) : '—'} Plan</span>
+      ${vehicleStr ? `<span>·</span><strong>${vehicleStr}</strong>` : ''}
+    </div>
+  </div>`;
+}
+
+// ════════════════════════════════════════════════
+// CHECK-IN SEARCH
+// ════════════════════════════════════════════════
+document.getElementById('checkin-search').addEventListener('input', async function() {
+  const q = this.value.trim().toLowerCase();
+  if (!q) { document.getElementById('checkin-results').innerHTML = ''; return; }
+  const all = await getAll('members');
+  const matches = all.filter(m =>
+    m.name.toLowerCase().includes(q) ||
+    (m.phone || '').replace(/\D/g,'').includes(q.replace(/\D/g,'')) ||
+    (m.plate || '').toLowerCase().includes(q)
+  );
+  renderCheckinResults(matches);
+});
+
+function renderCheckinResults(members) {
+  const el = document.getElementById('checkin-results');
+  if (!members.length) {
+    el.innerHTML = `<div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <h3>No match found</h3>
+      <p>Try a different name, phone, or plate number.</p>
+    </div>`;
+    return;
+  }
+  el.innerHTML = members.map(m => `
+    <div>
+      ${memberCardHTML(m)}
+      <div class="checkin-action">
+        <button class="btn-primary" onclick="doCheckin(${m.id}, event)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Check In ${m.name.split(' ')[0]}
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function doCheckin(memberId, e) {
+  e.stopPropagation();
+  const m = await get('members', memberId);
+  if (!m) return;
+  if (m.status !== 'active') {
+    showToast('Membership is not active', 'warning'); return;
+  }
+  await put('checkins', { memberId, ts: Date.now() });
+  showToast(`${m.name.split(' ')[0]} checked in!`);
+}
+
+// ════════════════════════════════════════════════
+// MEMBERS LIST
+// ════════════════════════════════════════════════
+function setFilter(btn, filter) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderMembers();
+}
+
+async function renderMembers() {
+  const all = await getAll('members');
+  const filtered = currentFilter === 'all' ? all : all.filter(m => m.status === currentFilter);
+  const el = document.getElementById('members-list');
+  if (!filtered.length) {
+    el.innerHTML = `<div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <h3>No members yet</h3>
+      <p>Tap Add to register your first member.</p>
+    </div>`;
+    return;
+  }
+  el.innerHTML = filtered.map(m => memberCardHTML(m)).join('');
+}
+
+// ════════════════════════════════════════════════
+// DETAIL VIEW
+// ════════════════════════════════════════════════
+async function openDetail(id) {
+  const m = await get('members', id);
+  if (!m) return;
+
+  const checkins = await getAll('checkins');
+  const myCheckins = checkins.filter(c => c.memberId === id).sort((a,b) => b.ts - a.ts);
+
+  const vehicleStr = [m.year, m.color, m.vehicle].filter(Boolean).join(' ');
+  const expDate = m.joinDate ? new Date(m.joinDate + (365*86400000)) : null;
+
+  const recentHTML = myCheckins.slice(0,10).map(c => `
+    <div class="checkin-entry">
+      <div class="checkin-entry-date">${formatDate(c.ts)}</div>
+      <div class="checkin-entry-time">${formatTime(c.ts)}</div>
+    </div>
+  `).join('') || `<div style="color:var(--gray-400); font-size:14px; padding:12px 0;">No check-ins yet</div>`;
+
+  document.getElementById('detail-content').innerHTML = `
+    <div class="detail-hero" style="padding:0 20px 24px; margin-bottom:0;">
+      <div class="detail-avatar">${initials(m.name)}</div>
+      <div>
+        <div class="detail-name">${m.name}</div>
+        <div class="detail-since">Member since ${m.joinDate ? formatDate(m.joinDate) : '—'}</div>
+        <div style="margin-top:6px;">${statusBadge(m.status)}</div>
+      </div>
+    </div>
+
+    <div style="height:20px"></div>
+
+    ${m.plan ? `
+    <div class="plan-banner">
+      <div>
+        <div class="plan-banner-label">Current Plan</div>
+        <div class="plan-banner-name">${m.plan.charAt(0).toUpperCase()+m.plan.slice(1)}</div>
+        ${expDate ? `<div class="plan-banner-exp">Renews ${formatDate(expDate.getTime())}</div>` : ''}
+      </div>
+      <div style="text-align:right;">
+        <div style="font-family:'Syne',sans-serif; font-size:28px; font-weight:800; color:var(--amber);">
+          $${{basic:29,premium:49,unlimited:79,vip:99}[m.plan]||'—'}
+        </div>
+        <div style="font-size:12px; color:var(--gray-400);">/month</div>
+      </div>
+    </div>` : ''}
+
+    ${m.plate ? plateChip(m.plate) : ''}
+
+    <div class="detail-section" style="padding: 0 20px 20px; margin-top: 12px;">
+      <div class="detail-section-title">Contact</div>
+      <div class="detail-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <div class="detail-row-label">Phone</div>
+        <div class="detail-row-value">${m.phone || '—'}</div>
+      </div>
+      ${m.email ? `<div class="detail-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <div class="detail-row-label">Email</div>
+        <div class="detail-row-value" style="font-size:13px;">${m.email}</div>
+      </div>` : ''}
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="detail-section" style="padding: 0 20px 20px;">
+      <div class="detail-section-title">Vehicle</div>
+      <div class="detail-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        <div class="detail-row-label">Vehicle</div>
+        <div class="detail-row-value">${vehicleStr || '—'}</div>
+      </div>
+    </div>
+
+    ${m.notes ? `<div class="divider"></div>
+    <div class="detail-section" style="padding: 0 20px 20px;">
+      <div class="detail-section-title">Notes</div>
+      <div style="font-size:14px; color:var(--gray-200); line-height:1.6;">${m.notes}</div>
+    </div>` : ''}
+
+    <div class="divider"></div>
+
+    <div class="detail-section" style="padding: 0 20px 20px;">
+      <div class="detail-section-title">Check-in History (${myCheckins.length} total)</div>
+      <div class="checkin-history" style="padding:0;">${recentHTML}</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div style="padding: 0 20px 12px; display:flex; flex-direction:column; gap:10px;">
+      <button class="btn-primary" onclick="toggleStatus(${m.id},'${m.status}')">
+        ${m.status === 'active' ? 'Deactivate Membership' : 'Activate Membership'}
+      </button>
+    </div>
+
+    <div class="danger-zone">
+      <button class="btn-danger" onclick="deleteMember(${m.id},'${m.name}')">Delete Member</button>
+    </div>
+  `;
+
+  document.getElementById('detail-view').style.display = 'block';
+  document.getElementById('detail-view').scrollTop = 0;
+}
+
+function closeDetail() {
+  document.getElementById('detail-view').style.display = 'none';
+  renderMembers();
+}
+
+async function toggleStatus(id, current) {
+  const m = await get('members', id);
+  m.status = current === 'active' ? 'inactive' : 'active';
+  await put('members', m);
+  showToast(m.status === 'active' ? 'Membership activated' : 'Membership deactivated',
+    m.status === 'active' ? 'success' : 'warning');
+  openDetail(id);
+}
+
+async function deleteMember(id, name) {
+  if (!confirm(`Remove ${name} from the membership list? This cannot be undone.`)) return;
+  await del('members', id);
+  showToast(`${name} removed`);
+  closeDetail();
+}
+
+// ════════════════════════════════════════════════
+// ADD MEMBER
+// ════════════════════════════════════════════════
+function selectPlan(el, plan) {
+  document.querySelectorAll('.plan-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  currentPlan = plan;
+}
+
+async function saveMember() {
+  const name = document.getElementById('f-name').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const plate = document.getElementById('f-plate').value.trim().toUpperCase();
+  const year = document.getElementById('f-year').value.trim();
+  const color = document.getElementById('f-color').value.trim();
+  const vehicle = document.getElementById('f-vehicle').value.trim();
+  const status = document.getElementById('f-status').value;
+  const notes = document.getElementById('f-notes').value.trim();
+
+  if (!name) { showToast('Name is required', 'error'); return; }
+  if (!phone) { showToast('Phone is required', 'error'); return; }
+
+  await put('members', {
+    name, phone, email, plate, year, color, vehicle,
+    plan: currentPlan, status, notes,
+    joinDate: Date.now()
+  });
+
+  // Reset form
+  ['f-name','f-phone','f-email','f-plate','f-year','f-color','f-vehicle','f-notes'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('f-status').value = 'active';
+  selectPlan(document.querySelector('[data-plan="basic"]'), 'basic');
+
+  showToast(`${name} added!`);
+  showPage('members', document.querySelectorAll('.nav-btn')[1]);
+}
+
+// ════════════════════════════════════════════════
+// DASHBOARD
+// ════════════════════════════════════════════════
+async function renderDashboard() {
+  const members = await getAll('members');
+  const checkins = await getAll('checkins');
+
+  const active = members.filter(m => m.status === 'active').length;
+  const today = checkins.filter(c => {
+    const d = new Date(c.ts); const n = new Date();
+    return d.getDate()===n.getDate() && d.getMonth()===n.getMonth() && d.getFullYear()===n.getFullYear();
+  }).length;
+
+  document.getElementById('stats-grid').innerHTML = `
+    <div class="stat-card">
+      <div class="stat-label">Total Members</div>
+      <div class="stat-number">${members.length}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Active</div>
+      <div class="stat-number aqua">${active}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Today's Check-ins</div>
+      <div class="stat-number amber">${today}</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Total Check-ins</div>
+      <div class="stat-number">${checkins.length}</div>
+    </div>
+  `;
+
+  const recent = checkins.sort((a,b) => b.ts - a.ts).slice(0,8);
+  const memberMap = {};
+  members.forEach(m => memberMap[m.id] = m);
+
+  const el = document.getElementById('recent-checkins');
+  if (!recent.length) {
+    el.innerHTML = `<div style="color:var(--gray-400); font-size:14px; padding:12px 0;">No check-ins yet today.</div>`;
+    return;
+  }
+  el.innerHTML = recent.map(c => {
+    const m = memberMap[c.memberId];
+    if (!m) return '';
+    return `<div class="checkin-entry" style="border-bottom:1px solid rgba(255,255,255,0.05); padding: 10px 0;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--aqua);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--navy);flex-shrink:0;">${initials(m.name)}</div>
+        <div>
+          <div style="font-size:15px;font-weight:500;color:var(--white);">${m.name}</div>
+          <div style="font-size:12px;color:var(--gray-400);">${m.plate || m.vehicle || '—'}</div>
+        </div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:13px;color:var(--white);">${formatTime(c.ts)}</div>
+        <div style="font-size:11px;color:var(--gray-400);">${formatDate(c.ts)}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ════════════════════════════════════════════════
+// CAMERA / OCR
+// ════════════════════════════════════════════════
+async function openCamera(target) {
+  cameraTarget = target;
+  document.getElementById('camera-modal').classList.add('open');
+  document.getElementById('ocr-status').textContent = '';
+
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } }
+    });
+    cameraStream = stream;
+    const vid = document.getElementById('camera-feed');
+    vid.srcObject = stream;
+    vid.play();
+  } catch (err) {
+    document.getElementById('ocr-status').textContent = 'Camera not available — type the plate manually.';
+  }
+}
+
+function closeCamera() {
+  document.getElementById('camera-modal').classList.remove('open');
+  if (cameraStream) {
+    cameraStream.getTracks().forEach(t => t.stop());
+    cameraStream = null;
+  }
+}
+
+async function captureFrame() {
+  const video = document.getElementById('camera-feed');
+  const canvas = document.getElementById('capture-canvas');
+  const status = document.getElementById('ocr-status');
+
+  canvas.width = video.videoWidth || 640;
+  canvas.height = video.videoHeight || 480;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(video, 0, 0);
+
+  // Crop to plate region (center 70% wide, middle third)
+  const cropX = canvas.width * 0.15;
+  const cropY = canvas.height * 0.35;
+  const cropW = canvas.width * 0.7;
+  const cropH = canvas.height * 0.3;
+
+  const cropCanvas = document.createElement('canvas');
+  cropCanvas.width = cropW * 2;
+  cropCanvas.height = cropH * 2;
+  const cropCtx = cropCanvas.getContext('2d');
+
+  // Upscale for better OCR
+  cropCtx.drawImage(canvas, cropX, cropY, cropW, cropH, 0, 0, cropW*2, cropH*2);
+
+  // Enhance contrast
+  const imgData = cropCtx.getImageData(0, 0, cropCanvas.width, cropCanvas.height);
+  const d = imgData.data;
+  for (let i = 0; i < d.length; i += 4) {
+    const gray = 0.299*d[i] + 0.587*d[i+1] + 0.114*d[i+2];
+    const contrast = ((gray - 128) * 1.5) + 128;
+    const clamped = Math.max(0, Math.min(255, contrast));
+    d[i] = d[i+1] = d[i+2] = clamped;
+  }
+  cropCtx.putImageData(imgData, 0, 0);
+
+  status.textContent = 'Reading plate…';
+
+  if (typeof Tesseract === 'undefined') {
+    status.textContent = 'Loading OCR…';
+    await loadTesseract();
+  }
+
+  try {
+    const result = await Tesseract.recognize(cropCanvas, 'eng', {
+      logger: () => {},
+      tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 '
+    });
+
+    let text = result.data.text.trim().toUpperCase().replace(/[^A-Z0-9\s]/g, '').replace(/\s+/g,' ').trim();
+
+    // Heuristic: grab longest token that looks like a plate
+    const tokens = text.split(' ');
+    const plateLike = tokens.filter(t => t.length >= 3 && t.length <= 8).sort((a,b) => b.length - a.length);
+    text = plateLike.join(' ').substring(0,10);
+
+    if (text.length >= 3) {
+      status.textContent = `Detected: ${text}`;
+      setTimeout(() => {
+        if (cameraTarget === 'add') {
+          document.getElementById('f-plate').value = text;
+        } else {
+          document.getElementById('checkin-search').value = text;
+          document.getElementById('checkin-search').dispatchEvent(new Event('input'));
+        }
+        closeCamera();
+      }, 800);
+    } else {
+      status.textContent = 'Could not read plate — try again or type it manually.';
+    }
+  } catch (err) {
+    status.textContent = 'OCR failed. Type the plate manually.';
+  }
+}
+
+function loadTesseract() {
+  return new Promise((res, rej) => {
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
+    s.onload = res;
+    s.onerror = rej;
+    document.head.appendChild(s);
+  });
+}
+
+// ════════════════════════════════════════════════
+// TOAST
+// ════════════════════════════════════════════════
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.className = `toast ${type === 'error' ? 'error' : type === 'warning' ? 'warning' : ''}`;
+  t.querySelector('span').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ════════════════════════════════════════════════
+// SEED DEMO DATA (first run only)
+// ════════════════════════════════════════════════
+async function seedIfEmpty() {
+  const all = await getAll('members');
+  if (all.length > 0) return;
+
+  const demo = [
+    { name: 'James Patterson', phone: '(205) 555-0142', email: 'jpatterson@email.com', plate: 'ALB 4421', year: '2021', color: 'Black', vehicle: 'Ford F-150', plan: 'premium', status: 'active', notes: '', joinDate: Date.now() - 90*86400000 },
+    { name: 'Maria Gonzalez', phone: '(205) 555-0187', email: 'mgonzalez@email.com', plate: 'XTR 9923', year: '2019', color: 'Silver', vehicle: 'Honda Accord', plan: 'basic', status: 'active', notes: 'Prefers bay 2', joinDate: Date.now() - 45*86400000 },
+    { name: 'David Kim', phone: '(205) 555-0231', email: '', plate: 'DNL 7712', year: '2022', color: 'White', vehicle: 'Toyota RAV4', plan: 'unlimited', status: 'active', notes: '', joinDate: Date.now() - 120*86400000 },
+    { name: 'Sarah Mitchell', phone: '(205) 555-0399', email: 'smitchell@email.com', plate: 'BCK 5544', year: '2018', color: 'Blue', vehicle: 'Chevy Malibu', plan: 'basic', status: 'inactive', notes: 'Payment lapsed', joinDate: Date.now() - 200*86400000 },
+  ];
+
+  for (const m of demo) {
+    const id = await put('members', m);
+    // Add some checkin history
+    if (m.status === 'active') {
+      for (let i = 0; i < 5; i++) {
+        await put('checkins', { memberId: id, ts: Date.now() - i * 7 * 86400000 });
+      }
+    }
+  }
+}
+
+// ════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════
+openDB().then(async () => {
+  await seedIfEmpty();
+  renderDashboard();
+}).catch(err => {
+  console.error('DB init failed', err);
+});
+</script>
+
+
+</body></html>
