@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0061)file:///C:/Users/edmun/Downloads/magic-city-membership_6.html -->
+<!-- saved from url=(0061)file:///C:/Users/edmun/Downloads/magic-city-membership_7.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -1040,7 +1040,7 @@
     </div>
   </div>
   <div class="camera-bottom-bar">
-    <div id="ocr-scan-ui" style="display: block;">
+    <div id="ocr-scan-ui">
       <div class="camera-hint">Line up the plate inside the box, then tap the button</div>
       <div id="ocr-status"></div>
       <div class="camera-btn-row">
@@ -1640,11 +1640,11 @@ async function captureFrame() {
   const ctx = canvas.getContext('2d');
   ctx.drawImage(video, 0, 0);
 
-  // Crop to the center target box area (generous, no aggressive trimming)
-  const cropX = canvas.width * 0.05;
-  const cropY = canvas.height * 0.25;
-  const cropW = canvas.width * 0.90;
-  const cropH = canvas.height * 0.50;
+  // Capture full frame — let OCR see everything, scoring will find the plate
+  const cropX = 0;
+  const cropY = 0;
+  const cropW = canvas.width;
+  const cropH = canvas.height;
 
   const cropCanvas = document.createElement('canvas');
   cropCanvas.width = cropW * 2;
@@ -1678,35 +1678,52 @@ async function captureFrame() {
       tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 '
     });
 
-    let text = result.data.text.trim().toUpperCase().replace(/[^A-Z0-9\s]/g, '').replace(/\s+/g,' ').trim();
+    const raw = result.data.text.trim().toUpperCase().replace(/[^A-Z0-9\s]/g, '').replace(/\s+/g,' ').trim();
+    const tokens = raw.split(' ').filter(t => t.length >= 2);
 
-    // Alabama plates are 6-7 chars. Score every token and adjacent pair by proximity to that length.
-    const tokens = text.split(' ').filter(t => t.length >= 2);
+    // Words that will NEVER be a plate number
+    const NEVER_PLATE = new Set([
+      'ALABAMA','ALASKA','ARIZONA','ARKANSAS','CALIFORNIA','COLORADO','CONNECTICUT',
+      'DELAWARE','FLORIDA','GEORGIA','HAWAII','IDAHO','ILLINOIS','INDIANA','IOWA',
+      'KANSAS','KENTUCKY','LOUISIANA','MAINE','MARYLAND','MASSACHUSETTS','MICHIGAN',
+      'MINNESOTA','MISSISSIPPI','MISSOURI','MONTANA','NEBRASKA','NEVADA','HAMPSHIRE',
+      'JERSEY','MEXICO','YORK','CAROLINA','DAKOTA','OHIO','OKLAHOMA','OREGON',
+      'PENNSYLVANIA','RHODE','ISLAND','TENNESSEE','TEXAS','UTAH','VERMONT',
+      'VIRGINIA','WASHINGTON','WISCONSIN','WYOMING',
+      'HEART','DIXIE','VOLUNTEER','SUNSHINE','PEACH','MAGNOLIA','HOSPITALITY',
+      'GOD','BLESS','AMERICA','UNITED','STATES','WWW','COM','GOV','NET','ORG',
+      'TRAVEL','DRIVE','FULL','SERVICE','WASH','AUTO','COUNTY','CITY','STATE',
+      'THE','AND','FOR','OF','IN','IS','IT','BE','AS','AT','SO','WE','HE',
+      'BY','OR','ON','DO','IF','ME','MY','UP','AN','GO','NO','US','AM',
+      'LOVE','LIVE','LIFE','BORN','FREE','LAND','HOME','SOUL','WILD','RIDE',
+      'ROAD','BLUE','GOLD','STAR','FLAG','HERO','PRAY','FAITH','HOPE','GRACE',
+      'PEACE','POWER','PRIDE','BRAVE','TRUE','REAL','GOOD','GREAT','BACK',
+      'NEVER','ALWAYS','ONLY','JUST','EVEN','ALSO','FROM','WITH','THIS','THAT',
+      'YOUR','THEM','THEY','WHEN','WHAT','WILL','BEEN','HAVE','MORE',
+    ]);
 
-    function plateLikelihood(t) {
-      const len = t.length;
-      const hasDigit = /\d/.test(t);
+    function scorePlate(t) {
+      if (t.length < 4 || t.length > 8) return -100;
+      if (NEVER_PLATE.has(t)) return -100;
+
+      const hasDigit  = /\d/.test(t);
       const hasLetter = /[A-Z]/.test(t);
-      // Plates vary by state: AL/TN/GA/MS = 6-7 chars, FL = up to 8
-      const lenScore = len >= 4 && len <= 8 ? 8 - Math.abs(7 - len) : 0;
-      const mixScore = (hasDigit && hasLetter) ? 6 : 0;
-      return lenScore + mixScore;
+
+      let score = 0;
+      score += (t.length >= 5 && t.length <= 8) ? 20 : 5;
+      // Mixed alphanumeric is the strongest signal — "AOCU9TE" wins over "AMERICA"
+      score += (hasDigit && hasLetter) ? 40 : 0;
+      score += (!hasLetter) ? -20 : 0;
+      score += (!hasDigit && t.length <= 5) ? -15 : 0;
+      return score;
     }
 
-    // Also try adjacent token pairs (e.g. "ABC" + "123" = "ABC 123")
-    let best = '', bestScore = -1;
-    for (let i = 0; i < tokens.length; i++) {
-      const single = tokens[i];
-      const sScore = plateLikelihood(single);
-      if (sScore > bestScore) { bestScore = sScore; best = single; }
+    const scored = tokens
+      .map(t => ({ t, score: scorePlate(t) }))
+      .filter(x => x.score > 0)
+      .sort((a, b) => b.score - a.score);
 
-      if (i + 1 < tokens.length) {
-        const pair = single + tokens[i+1];
-        const pScore = plateLikelihood(pair);
-        if (pScore > bestScore) { bestScore = pScore; best = single + ' ' + tokens[i+1]; }
-      }
-    }
-    text = best.substring(0, 10).trim();
+    const text = scored.length ? scored[0].t : '';
 
     if (text.length >= 2) {
       status.textContent = '';
