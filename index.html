@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0061)file:///C:/Users/edmun/Downloads/magic-city-membership_4.html -->
+<!-- saved from url=(0061)file:///C:/Users/edmun/Downloads/magic-city-membership_5.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -1629,11 +1629,11 @@ async function captureFrame() {
   const ctx = canvas.getContext('2d');
   ctx.drawImage(video, 0, 0);
 
-  // Crop to plate region (center 70% wide, middle third)
-  const cropX = canvas.width * 0.15;
-  const cropY = canvas.height * 0.35;
-  const cropW = canvas.width * 0.7;
-  const cropH = canvas.height * 0.3;
+  // Crop to the center target box area (generous, no aggressive trimming)
+  const cropX = canvas.width * 0.05;
+  const cropY = canvas.height * 0.25;
+  const cropW = canvas.width * 0.90;
+  const cropH = canvas.height * 0.50;
 
   const cropCanvas = document.createElement('canvas');
   cropCanvas.width = cropW * 2;
@@ -1669,15 +1669,33 @@ async function captureFrame() {
 
     let text = result.data.text.trim().toUpperCase().replace(/[^A-Z0-9\s]/g, '').replace(/\s+/g,' ').trim();
 
-    // Strip known Alabama plate boilerplate that isn't the plate number
-    const BLOCKLIST = ['ALABAMA','HEART','DIXIE','OF','WWW','TRAVEL','COM','GOV','STATE'];
-    const tokens = text.split(' ').filter(t => {
-      if (t.length < 2 || t.length > 8) return false;
-      if (BLOCKLIST.includes(t)) return false;
-      if (/^\d{1,2}$/.test(t)) return false; // sticker years like "01" "27"
-      return true;
-    });
-    text = tokens.join(' ').substring(0, 10).trim();
+    // Alabama plates are 6-7 chars. Score every token and adjacent pair by proximity to that length.
+    const tokens = text.split(' ').filter(t => t.length >= 2);
+
+    function plateLikelihood(t) {
+      const len = t.length;
+      const hasDigit = /\d/.test(t);
+      const hasLetter = /[A-Z]/.test(t);
+      // Plates vary by state: AL/TN/GA/MS = 6-7 chars, FL = up to 8
+      const lenScore = len >= 4 && len <= 8 ? 8 - Math.abs(7 - len) : 0;
+      const mixScore = (hasDigit && hasLetter) ? 6 : 0;
+      return lenScore + mixScore;
+    }
+
+    // Also try adjacent token pairs (e.g. "ABC" + "123" = "ABC 123")
+    let best = '', bestScore = -1;
+    for (let i = 0; i < tokens.length; i++) {
+      const single = tokens[i];
+      const sScore = plateLikelihood(single);
+      if (sScore > bestScore) { bestScore = sScore; best = single; }
+
+      if (i + 1 < tokens.length) {
+        const pair = single + tokens[i+1];
+        const pScore = plateLikelihood(pair);
+        if (pScore > bestScore) { bestScore = pScore; best = single + ' ' + tokens[i+1]; }
+      }
+    }
+    text = best.substring(0, 10).trim();
 
     if (text.length >= 2) {
       status.textContent = '';
